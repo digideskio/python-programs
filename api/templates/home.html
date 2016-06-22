@@ -22,6 +22,25 @@
                         {% if entry['foto'] %} <img src='{{ entry['foto'] }}'> {% endif %}
                     </div>
                 {% endfor %}
+                {% if comentarios and comentarios|length > 0 %}
+                    <h3>Comentarios: </h3>
+                        {% for coment in comentarios %}
+                            <p>
+                                {{ coment }}
+                                <form action="{{ url_for('remove', city=city, comentario=coment) }}" method="post">
+                                    <input type=submit value=X>
+                                </form>
+                            </p>
+                        {% endfor %}
+
+                {% endif %}
+                <form action="{{ url_for('comentario', city=city) }}" method=post>
+                    <dl>
+                        <dt>Comentario:
+                        <dd><textarea name=comentario rows=5 cols=40></textarea>
+                        <dd><input type=submit value=Enviar>
+                    </dl>
+                </form>
             {% endblock %}
         </div>
      
