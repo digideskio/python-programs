@@ -5,6 +5,7 @@ from django.views import generic
 from django.shortcuts import get_object_or_404
 
 from .models import States
+from . import signals
 
 
 class IndexView(generic.ListView):
@@ -19,7 +20,10 @@ class News(generic.TemplateView):
     template_name = 'api/news.html'
 
     def get_context_data(self, **kwargs):
+        # import pdb
+        # pdb.set_trace()
         pk = self.kwargs['uf']
+        signals.log_signal.send_robust(sender=States, requests=self.request, state=pk)
         state = get_object_or_404(States, pk=pk.upper())
         req = requests.get('http://c.api.globo.com/news/{}.json'.format(state.uf.lower()))
         if req.status_code != 200:

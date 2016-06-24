@@ -1,4 +1,8 @@
 from django.db import models
+from django.dispatch import receiver
+
+from . import signals
+
 
 # Create your models here.
 
@@ -9,3 +13,12 @@ class States(models.Model):
 
     def __str__(self):
         return self.uf
+
+
+@receiver(signals.log_signal, sender=States)
+def log_handler(sender, **kwargs):
+    req = kwargs['requests']
+    state = kwargs['state']
+    with open('log.txt', 'a') as fd:
+        fd.write('path: {} 		username: {} 	state: {}\n'.format(
+            req.path, req.user.username, state.upper()))

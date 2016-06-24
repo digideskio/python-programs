@@ -1,0 +1,4 @@
+path: /api/news/sp/ 		username: admin 	state: SP
+path: /api/news/rj/ 		username: admin 	state: RJ
+path: /api/news/mg/ 		username: admin 	state: MG
+path: /api/news/es/ 		username: admin 	state: ES
