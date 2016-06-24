@@ -1,7 +1,7 @@
 {% if states %}
     <ul>
     {% for state in states %}
-        <li><a href="{% url 'api:news' state %}">{{ state }}</a></li>
+        <li><a href="{% url 'api:news' state.uf|lower %}">{{ state.state }}</a></li>
     {% endfor %}
     </ul>
 {% else %}
