@@ -26,5 +26,6 @@ class News(generic.TemplateView):
                 'error_message': 'Not Found, status: {}'.format(req.status_code)
             }
         return {
-            'news': json.loads(req.text)
+            'news': json.loads(req.text),
+            'state': state
         }
