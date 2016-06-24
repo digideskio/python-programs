@@ -1,0 +1,33 @@
+.news{
+	width: 400px;
+	padding: 10px;
+    border: 3px solid gray;
+    margin: 25px;
+   	font-family: "Times New Roman", Georgia, Serif;
+}
+
+/*Chapeu*/
+.new h5 {
+	top: 20px;
+	color: black;
+	margin-bottom: 3px;
+}
+/*Subtitulo*/
+.new h4 {
+	margin-top: 5px;
+	color: #808080;
+}
+
+/*Titulo*/
+.new a {
+	margin-top: 1px;
+	font-size: 22px;
+	color: #8B0000;
+	text-decoration:none; 
+}
+
+/*Imagem*/
+.new img {
+	height: 30%;
+	width: 100%;
+}
