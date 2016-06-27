@@ -1,10 +1,13 @@
 from django.db import models
 from django.dispatch import receiver
 
+import threading
+
 from . import signals
 
 
 # Create your models here.
+lock = threading.Lock()
 
 
 class States(models.Model):
@@ -15,18 +18,20 @@ class States(models.Model):
         return self.uf
 
 
-# class Comments(models.Model):
-#     uf = models.ForeignKey(States, on_delete=models.CASCADE)
-#     comment = models.CharField(max_length=200)
-
-#     def __str__():
-#         return self.comment
+def write_file(request, state, log_file):
+    lock.acquire()
+    with open(log_file, 'a') as fd:
+        fd.write('path: {}       username: {}       state: {}\n'.format(
+            request.path, request.user.username, state.upper()))
+    lock.release()
 
 
 @receiver(signals.log_signal, sender=States)
 def log_handler(sender, **kwargs):
     req = kwargs['requests']
     state = kwargs['state']
-    with open('log.txt', 'a') as fd:
-        fd.write('path: {} 		username: {} 	state: {}\n'.format(
-            req.path, req.user.username, state.upper()))
+    log_file = kwargs['file']
+    try:
+        threading.Thread(target=write_file, args=(req, state, log_file)).start()
+    except Exception as e:
+        print 'Error: {}'.format(e)
