@@ -15,6 +15,14 @@ class States(models.Model):
         return self.uf
 
 
+# class Comments(models.Model):
+#     uf = models.ForeignKey(States, on_delete=models.CASCADE)
+#     comment = models.CharField(max_length=200)
+
+#     def __str__():
+#         return self.comment
+
+
 @receiver(signals.log_signal, sender=States)
 def log_handler(sender, **kwargs):
     req = kwargs['requests']
