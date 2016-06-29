@@ -2,11 +2,11 @@ from django.test import TestCase, RequestFactory
 from django.contrib.auth.models import User
 
 from ..models import States
-from ..signals import log_signal
-
 import os
 import threading
 import time
+
+from ..signals import log_signal
 # Create your tests here.
 
 

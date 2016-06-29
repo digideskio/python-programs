@@ -1,7 +1,8 @@
 from django.test import TestCase
-from ..models import States, Comment
 from django.core.urlresolvers import reverse
 from django.shortcuts import get_object_or_404
+
+from ..models import States, Comment
 
 
 def create_state(uf, state, comment=None):
