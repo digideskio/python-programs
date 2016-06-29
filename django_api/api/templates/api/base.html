@@ -1,0 +1,16 @@
+{% load staticfiles %}
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+
+<!DOCTYPE html>
+<html>
+    <head>
+        {% block title %}
+        {% endblock %}
+        <link rel="stylesheet" type="text/css" href="{% static 'api/main.css' %}" />
+    </head>
+    
+    <body>
+        {% block content %}
+        {% endblock %}
+    </body>
+</html>

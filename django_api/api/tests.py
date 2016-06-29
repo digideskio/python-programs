@@ -8,7 +8,6 @@ from .signals import log_signal
 import os
 import threading
 import time
-import factory
 # Create your tests here.
 
 

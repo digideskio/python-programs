@@ -1,4 +1,49 @@
-{% load staticfiles %}
+{% extends "api/base.html" %}
+
+{% block title %}
+<title>Django News</title>
+{% endblock %}
+
+{% block content %}
+<header>
+    <div class="container">
+        <h1 class="logo">Noticias para {{ state.state }}</h1>
+    </div>
+</header> 
+
+<div class="container">
+        {% for entry in news %}
+            <div class="news">
+                <h5>{{ entry.chapeu }}</h5>
+                <a href={{ entry.url }}>{{ entry.titulo }}</a>
+                <h4>{{ entry.subtitulo }}</h4>
+                {% if entry.foto %} <img src='{{ entry.foto }}'> {% endif %}
+            </div>
+        {% endfor %}
+</div>
+<div class="container">
+    {% if comments|length > 0 %}
+        <h3>Comentarios: </h3>
+        <ul>
+        {% for comment in comments %}
+            <li>
+                {{ comment.comment }}
+                <a href="{% url 'api:delete_comment' state.uf  comment.id %}">X</a>
+            </li>
+        {% endfor%}
+        </ul>
+    {% endif %}
+</div>
+<div class="container">
+    <form action="{% url 'api:create_comment' state.uf %}" method="post">
+        {% csrf_token %}
+        {{ form }}
+        <input type='submit' value='Enviar'>
+    </form>
+</div>
+{% endblock %}
+
+<!-- {% load staticfiles %}
 {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
 
 <!DOCTYPE html>
@@ -25,5 +70,26 @@
                     </div>
                 {% endfor %}
         </div>
+        <div class="container">
+            {% if comments|length > 0 %}
+                <h3>Comentarios: </h3>
+                <ul>
+                {% for comment in comments %}
+                    <li>
+                        {{ comment.comment }}
+                        <a href="{% url 'api:delete_comment' state.uf  comment.id %}">X</a>
+                    </li>
+                {% endfor%}
+                </ul>
+            {% endif %}
+        </div>
+        <div class="container">
+            <form action="{% url 'api:create_comment' state.uf %}" method="post">
+                {% csrf_token %}
+                {{ form }}
+                <input type='submit' value='Enviar'>
+            </form>
+        </div>
     </body>
-</html>
+</html> -->
+

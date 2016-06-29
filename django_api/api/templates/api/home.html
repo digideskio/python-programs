@@ -1,3 +1,10 @@
+{% extends 'api/base.html' %}
+
+{% block title %}
+<title>Portal</title>
+{% endblock %}
+
+{% block content %}
 {% if states %}
     <ul>
     {% for state in states %}
@@ -7,3 +14,4 @@
 {% else %}
     <p>No state availbles.</p>
 {% endif %}
+{% endblock %}

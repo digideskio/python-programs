@@ -2,10 +2,12 @@ import json
 import requests
 
 from django.views import generic
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, redirect
+from django.core.urlresolvers import reverse
 
-from .models import States
+from .models import States, Comment
 from . import signals
+from .forms import CommentForm
 
 
 class IndexView(generic.ListView):
@@ -25,11 +27,40 @@ class News(generic.TemplateView):
                                 state=pk, file='log')
         state = get_object_or_404(States, pk=pk.upper())
         req = requests.get('http://c.api.globo.com/news/{}.json'.format(state.uf.lower()))
+        comments = state.comment.values()
         if req.status_code != 200:
             return {
                 'error_message': 'Not Found, status: {}'.format(req.status_code)
             }
         return {
             'news': json.loads(req.text),
-            'state': state
+            'state': state,
+            'form': CommentForm(),
+            'comments': comments
         }
+
+
+class CreateCommentView(generic.View):
+    template_name = 'api/news.html'
+
+    def post(self, request, *args, **kwargs):
+        form = CommentForm(request.POST)
+        uf = kwargs['uf']
+        if form.is_valid():
+            state = get_object_or_404(States, pk=uf)
+            comment = Comment(comment=form.cleaned_data['comment'])
+            comment.save()
+            state.comment.add(comment)
+            state.save()
+
+        return redirect(reverse('api:news', kwargs={'uf': uf.lower()}))
+
+
+class RemoveCommentView(generic.View):
+
+    def get(self, request, *args, **kwargs):
+        uf = self.kwargs['uf']
+        comment_id = self.kwargs['id']
+        state = get_object_or_404(States, pk=uf)
+        state.comment.remove(comment_id)
+        return redirect(reverse('api:news', kwargs={'uf': uf.lower()}))

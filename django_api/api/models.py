@@ -10,9 +10,17 @@ from . import signals
 lock = threading.Lock()
 
 
+class Comment(models.Model):
+    comment = models.CharField(max_length=200)
+
+    def __str__(self):
+        return self.comment
+
+
 class States(models.Model):
     uf = models.CharField(max_length=2, primary_key=True, unique=True)
     state = models.CharField(max_length=200)
+    comment = models.ManyToManyField(Comment)
 
     def __str__(self):
         return self.uf
