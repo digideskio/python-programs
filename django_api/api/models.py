@@ -39,7 +39,4 @@ def log_handler(sender, **kwargs):
     req = kwargs['requests']
     state = kwargs['state']
     log_file = kwargs['file']
-    try:
-        threading.Thread(target=write_file, args=(req, state, log_file)).start()
-    except Exception as e:
-        print 'Error: {}'.format(e)
+    threading.Thread(target=write_file, args=(req, state, log_file)).start()

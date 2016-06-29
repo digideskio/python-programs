@@ -1,3 +1,5 @@
+import httpretty
+import json
 from django.test import TestCase
 from django.core.urlresolvers import reverse
 from django.shortcuts import get_object_or_404
@@ -45,9 +47,23 @@ class TestIndexView(TestCase):
 
 class TesteNewsView(TestCase):
 
+    def setUp(self):
+        self.data = [
+            {
+                "subtitulo": "sub1",
+                "titulo": "tit1",
+                "url": "url1"
+            },
+            {
+                "subtitulo": "sub2",
+                "titulo": "tit2",
+                "url": "url2"
+            }
+        ]
+
     def test_news_with_states(self):
         create_state('RJ', 'Rio de Janeiro')
-        response = self.client.get(reverse('api:news', kwargs={'uf': 'rj'}))
+        response = self.client.get(reverse('api:news', kwargs={'uf': 'RJ'}))
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'api/news.html')
         self.assertContains(response, 'Noticias para Rio de Janeiro')
@@ -56,6 +72,18 @@ class TesteNewsView(TestCase):
     def test_news_without_states(self):
         response = self.client.get(reverse('api:news', kwargs={'uf': 'rj'}))
         self.assertEqual(response.status_code, 404)
+
+    @httpretty.activate
+    def test_news_capi_down(self):
+        httpretty.register_uri(httpretty.GET,
+                               "http://c.api.globo.com/news/rj.json",
+                               body=json.dumps(self.data),
+                               status=404)
+        create_state('RJ', 'Rio de Janeiro')
+        response = self.client.get(reverse('api:news', kwargs={'uf': 'RJ'}))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'api/news.html')
+        self.assertContains(response, 'Not Found, status: 404')
 
     def test_views_with_comments(self):
         create_state('RJ', 'Rio de Janeiro', 'comentario')

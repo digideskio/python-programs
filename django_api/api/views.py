@@ -30,7 +30,8 @@ class News(generic.TemplateView):
         comments = state.comment.values()
         if req.status_code != 200:
             return {
-                'error_message': 'Not Found, status: {}'.format(req.status_code)
+                'error_message': 'Not Found, status: {}'.format(req.status_code),
+                'state': state
             }
         return {
             'news': json.loads(req.text),
