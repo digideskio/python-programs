@@ -1,5 +1,4 @@
 import httpretty
-import json
 from django.test import TestCase
 from django.core.urlresolvers import reverse
 from django.shortcuts import get_object_or_404
@@ -47,20 +46,6 @@ class TestIndexView(TestCase):
 
 class TesteNewsView(TestCase):
 
-    def setUp(self):
-        self.data = [
-            {
-                "subtitulo": "sub1",
-                "titulo": "tit1",
-                "url": "url1"
-            },
-            {
-                "subtitulo": "sub2",
-                "titulo": "tit2",
-                "url": "url2"
-            }
-        ]
-
     def test_news_with_states(self):
         create_state('RJ', 'Rio de Janeiro')
         response = self.client.get(reverse('api:news', kwargs={'uf': 'RJ'}))
@@ -77,7 +62,6 @@ class TesteNewsView(TestCase):
     def test_news_capi_down(self):
         httpretty.register_uri(httpretty.GET,
                                "http://c.api.globo.com/news/rj.json",
-                               body=json.dumps(self.data),
                                status=404)
         create_state('RJ', 'Rio de Janeiro')
         response = self.client.get(reverse('api:news', kwargs={'uf': 'RJ'}))
