@@ -3,3 +3,4 @@ Django==1.9.7
 Factory==1.2
 requests==2.10.0
 httpretty==0.8.14
+django-bootstrap3==7.0.1

@@ -4,6 +4,8 @@ import requests
 from django.views import generic
 from django.shortcuts import get_object_or_404, redirect
 from django.core.urlresolvers import reverse
+from django.core import serializers
+from django.http import JsonResponse
 
 from .models import States, Comment
 from . import signals
@@ -65,3 +67,11 @@ class RemoveCommentView(generic.View):
         state = get_object_or_404(States, pk=uf)
         state.comment.remove(comment_id)
         return redirect(reverse('api:news', kwargs={'uf': uf.lower()}))
+
+
+class GetStatesView(generic.View):
+
+    def get(self, request, *args, **kwargs):
+        data = serializers.serialize(
+            'json', States.objects.all().order_by('uf'), fields=('uf', 'state',))
+        return JsonResponse(data, safe=False)

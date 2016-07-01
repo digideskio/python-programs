@@ -1,17 +1,6 @@
 {% extends 'api/base.html' %}
 
 {% block title %}
-<title>Portal</title>
+<title>Index News</title>
 {% endblock %}
 
-{% block content %}
-{% if states %}
-    <ul>
-    {% for state in states %}
-        <li><a href="{% url 'api:news' state.uf|lower %}">{{ state.state }}</a></li>
-    {% endfor %}
-    </ul>
-{% else %}
-    <p>No state availbles.</p>
-{% endif %}
-{% endblock %}

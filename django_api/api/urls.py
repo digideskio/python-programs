@@ -9,5 +9,6 @@ urlpatterns = [
     url(r'^news/(?P<uf>[\w-]{2})/comment/$',
         views.CreateCommentView.as_view(), name='create_comment'),
     url(r'^news/(?P<uf>[\w-]{2})/(?P<id>[\d+]+)/comment/$',
-        views.RemoveCommentView.as_view(), name='delete_comment')
+        views.RemoveCommentView.as_view(), name='delete_comment'),
+    url(r'^states/$', views.GetStatesView.as_view(), name='get_states')
 ]
