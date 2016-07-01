@@ -49,15 +49,20 @@
         </div>
         <!-- /.container -->
     </nav>
-
+	
+	<div class="slide_content">
 	{% block slide_content %}
 	{% endblock %}
+	</div>
 
 	<!-- Page Content -->
-    <div class="container">
+    <div class="container content">
 
         {% block content %}
         {% endblock %}
+
+		{% block comment %}
+		{% endblock %}
 
         <!-- Footer -->
         </br></br></br></br>

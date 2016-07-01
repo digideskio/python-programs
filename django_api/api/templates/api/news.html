@@ -6,39 +6,57 @@
 
 {% block content %}
 <header>
-    <div class="container">
-        <h1 class="logo">Noticias para {{ state.state }}</h1>
+    <div class="panel panel-success class header">
+        <div class="panel-body">Noticias para {{ state.state }}</div>
     </div>
 </header> 
 
 <div class="container">
-        {% for entry in news %}
-            <div class="news">
+    {% for entry in news %}
+        {% if entry.foto %}
+        <div class="hoverzoom news">
+            <img src="{{ entry.foto }}">
+            <div class="retina">
                 <h5>{{ entry.chapeu }}</h5>
-                <a href={{ entry.url }}>{{ entry.titulo }}</a>
-                <h4>{{ entry.subtitulo }}</h4>
-                {% if entry.foto %} <img src='{{ entry.foto }}'> {% endif %}
+                <h1>{{ entry.titulo }}</h1>
+                <h3>{{ entry.subtitulo }}</h3>
+                <a href="{{ entry.url }}"> Saiba mais </a>
+                
             </div>
-        {% endfor %}
+        </div>
+        {% endif %}
+    {% endfor %}
 </div>
-<div class="container">
+{% endblock %}
+
+{% block comment %}
+<div class="panel panel-default comment">
+    <div class="panel-header">{% if comments|length > 0 %} {{ comments|length }} Comentários {% else %} Seja o primeiro a comentar {% endif %}</div>
+    <div class="panel-body">
+        <form action="{% url 'api:create_comment' state.uf %}" method="post">
+            {% csrf_token %}
+            {% for field in form %}
+                {{ field.errors }}
+                {{ field }}
+            {% endfor %}
+            <input type='submit' value='Enviar'>
+        </form>    
+    </div>        
+</div>
+
+<div class="panel panel-default user_comment">
     {% if comments|length > 0 %}
-        <h3>Comentarios: </h3>
-        <ul>
-        {% for comment in comments %}
-            <li>
-                {{ comment.comment }}
-                <a href="{% url 'api:delete_comment' state.uf  comment.id %}">X</a>
-            </li>
-        {% endfor%}
-        </ul>
+        <div class="panel-header"> Comentarios: </div>
+        <div class="panel-body">
+            {% for comment in comments %}
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    {{ comment.comment }}
+                    <a href="{% url 'api:delete_comment' state.uf  comment.id %}">X</a>
+                </div>
+            </div>
+            {% endfor%}
+        </div>
     {% endif %}
-</div>
-<div class="container">
-    <form action="{% url 'api:create_comment' state.uf %}" method="post">
-        {% csrf_token %}
-        {{ form }}
-        <input type='submit' value='Enviar'>
-    </form>
 </div>
 {% endblock %}

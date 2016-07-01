@@ -24,6 +24,8 @@ class News(generic.TemplateView):
     template_name = 'api/news.html'
 
     def get_context_data(self, **kwargs):
+        # import pdb
+        # pdb.set_trace()
         pk = self.kwargs['uf']
         signals.log_signal.send(sender=States, requests=self.request,
                                 state=pk, file='log')
@@ -35,8 +37,9 @@ class News(generic.TemplateView):
                 'error_message': 'Not Found, status: {}'.format(req.status_code),
                 'state': state
             }
+        news = json.loads(req.text)
         return {
-            'news': json.loads(req.text),
+            'news': news,
             'state': state,
             'form': CommentForm(),
             'comments': comments
