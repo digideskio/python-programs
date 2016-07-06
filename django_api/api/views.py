@@ -38,6 +38,10 @@ class News(generic.TemplateView):
                 'state': state
             }
         news = json.loads(req.text)
+        for i in range(len(news)):
+            a = str(news[i]['foto'])
+            if a != 'None':
+                news[i]['foto'] = 'http://' + a.split('http://')[2]
         return {
             'news': news,
             'state': state,

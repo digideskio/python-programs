@@ -13,11 +13,12 @@
 .hoverzoom {
 	position: relative;
     width: 550px;
+    height: 300px;
     overflow: hidden;
 }
 
 .hoverzoom > img {
-   width: 100%; 
+   width: 10%; 
 	border-radius: 2px;
 	-webkit-transition: all .8s cubic-bezier(.190, 1.000, .220, 1.000);
 	    -moz-transition: all .8s cubic-bezier(.190, 1.000, .220, 1.000);

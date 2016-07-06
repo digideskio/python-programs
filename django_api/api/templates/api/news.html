@@ -14,14 +14,13 @@
 <div class="container">
     {% for entry in news %}
         {% if entry.foto %}
-        <div class="hoverzoom news">
-            <img src="{{ entry.foto }}">
+        <div class="hoverzoom news" onclick="handle()">
+            <img src="{{ entry.foto }}" style="width: 550px">
             <div class="retina">
                 <h5>{{ entry.chapeu }}</h5>
                 <h1>{{ entry.titulo }}</h1>
                 <h3>{{ entry.subtitulo }}</h3>
-                <a href="{{ entry.url }}"> Saiba mais </a>
-                
+                <a class="content-link" href="{{ entry.url }}"> Saiba mais </a>
             </div>
         </div>
         {% endif %}
@@ -59,4 +58,19 @@
         </div>
     {% endif %}
 </div>
+{% endblock %}
+
+{% block extra_js %}
+<script type="text/javascript">
+    function handle() {
+        alert('t');
+    };
+</script>
+<script type="text/javascript">
+    $('.content-link').click(function(event){
+        event.stopPropagation();
+        event.preventDefault();
+        alert('evento prevenido');
+    });
+</script>
 {% endblock %}
